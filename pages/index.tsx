@@ -1,8 +1,83 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import { useState } from 'react'
+import EffectButton from '../components/effectButton'
+import PowerButton from '../components/PowerButton'
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
+  const [effect1,setEffect1]=useState(false);
+  const [effect2,setEffect2]=useState(false);
+  const [effect3,setEffect3]=useState(false);
+  const [effect4,setEffect4]=useState(false);
+  const [effectOn,setEffectOn]=useState(0);
+  const [power,setPower]=useState(false);
+
+  function toggleEffects(effect:number){
+    if(effect==-1){
+      setEffect1(true)
+      setEffectOn(1)
+    }
+      
+    else if(power)
+    {
+      switch (effectOn) {
+        case 1:
+            setEffect1(false);
+          break;
+        case 2:
+          setEffect2(false);
+          break;
+        case 3:
+          setEffect3(false);
+          break;
+        case 4:
+          setEffect4(false);
+          break;
+      
+        default:
+          break;
+      }
+      if(effect!=effectOn)
+      {
+        switch (effect) {
+          case 1:
+              setEffect1(true);
+            break;
+          case 2:
+            setEffect2(true);
+            break;
+          case 3:
+            setEffect3(true);
+            break;
+          case 4:
+            setEffect4(true);
+            break;
+        
+          default:
+            break;
+      }
+      setEffectOn(effect)
+      }
+      else
+        setEffectOn(0)
+    }
+      
+  }
+  function tooglePower(){
+    var p= power
+    if(!p)
+    {
+      setPower(!p)
+      toggleEffects(-1) 
+    }
+    else
+    {
+      toggleEffects(0)
+      setPower(!p)
+    }
+      
+  }
   return (
     <div className={styles.container}>
       <Head>
@@ -13,57 +88,27 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          Luzes de Natal
         </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.tsx</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+        <div style={{display:'flex',flexDirection:'row',width:'80vw',justifyContent:'space-around'}}>
+          <EffectButton changefc={toggleEffects} number={1} toggle={effect1} title={"Efeito 1"}/>
+          <EffectButton changefc={toggleEffects} number={2} toggle={effect2} title={"Efeito 2"}/>
+          
+        </div>
+        <PowerButton changefc={tooglePower} number={effectOn} toggle={power}/>
+        <div style={{display:'flex',flexDirection:'row',width:'80vw',justifyContent:'space-around'}}>
+          <EffectButton changefc={toggleEffects} number={3} toggle={effect3} title={"Efeito 3"}/>
+          <EffectButton changefc={toggleEffects} number={4} toggle={effect4} title={"Efeito 4"}/>
+          
         </div>
       </main>
 
       <footer className={styles.footer}>
         <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+          href="https://github.com/28rodrigo/"
           target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
+          rel="noopener noreferrer">
+          Powered by Rodrigo Pereira @ 2022
         </a>
       </footer>
     </div>
