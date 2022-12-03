@@ -53,17 +53,17 @@ export default async function controlLight(req: NextApiRequest,res: NextApiRespo
         else{
             if(body.power==0)
             {
-                publish("light","power:0;effect:0")
+                publish("light","0;0")
                 editData(body)
             }    
             else if (body.power==1 && old_state.power==0) {
                 //turn on light
                 //set effect=1
-                publish("light","power:1;effect:1")
+                publish("light","1;1")
                 //guardar no ficheiro
                 editData(body)
             }else{
-                publish("light","power:1;effect:"+body.effect.toString());
+                publish("light","1;"+body.effect.toString());
                 editData(body)
             
             }
