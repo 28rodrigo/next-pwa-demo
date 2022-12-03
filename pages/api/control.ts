@@ -5,7 +5,7 @@ import path from 'path';
 import { promises as fs } from 'fs';
 import mqtt from 'mqtt'
 import { editData, getData } from '../../json/firebase';
-const host = 'lightsdrix.tplinkdns.com'
+const host = '83.132.100.226'
 const port = '18832'
 const clientId = 'mqtt_server'
 
