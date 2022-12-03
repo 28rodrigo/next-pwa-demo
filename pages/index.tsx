@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import EffectButton from '../components/effectButton'
 import PowerButton from '../components/PowerButton'
 import styles from '../styles/Home.module.css'
@@ -13,6 +13,20 @@ export default function Home() {
   const [effectOn,setEffectOn]=useState(0);
   const [power,setPower]=useState(false);
 
+  useEffect(() => {
+    // const response=fetch('/api/profile-data',{
+    //   method: "POST",
+    //   body: JSON.stringify(data),
+    // });
+    const response=fetch('api/get',{method:'GET'})
+    response.then(e=>{
+      var jsons=e.json();
+      jsons.then((json)=>{
+        console.log(json)
+        manualPower(json.power,json.effect)
+      })
+    })
+  }, [])
   function toggleEffects(effect:number){
     if(effect==-1){
       setEffect1(true)
@@ -40,6 +54,10 @@ export default function Home() {
       }
       if(effect!=effectOn)
       {
+        fetch('/api/control',{
+          method: "POST",
+          body: JSON.stringify({"power":1,"effect":effect}),
+        });
         switch (effect) {
           case 1:
               setEffect1(true);
@@ -68,15 +86,54 @@ export default function Home() {
     var p= power
     if(!p)
     {
+      fetch('/api/control',{
+        method: "POST",
+        body: JSON.stringify({"power":1,"effect":1}),
+      });
       setPower(!p)
-      toggleEffects(-1) 
+      toggleEffects(-1)
+      
     }
     else
     {
+      fetch('/api/control',{
+        method: "POST",
+        body: JSON.stringify({"power":0,"effect":0}),
+      });
       toggleEffects(0)
       setPower(!p)
     }
       
+  }
+  function manualPower(power:number,effect:number)
+  {
+    console.log("power")
+    console.log(power)
+    console.log("effect")
+    console.log(effect)
+    if (power==1){
+      setPower(true);
+    }else
+    setPower(false);
+    
+    switch (effect) {
+      case 1:
+          setEffect1(true);
+        break;
+      case 2:
+        setEffect2(true);
+        break;
+      case 3:
+        setEffect3(true);
+        break;
+      case 4:
+        setEffect4(true);
+        break;
+    
+      default:
+        break;
+  }
+  setEffectOn(effect)
   }
   return (
     <div className={styles.container}>
