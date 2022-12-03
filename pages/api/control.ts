@@ -4,9 +4,11 @@ import { type } from 'os'
 import path from 'path';
 import { promises as fs } from 'fs';
 import mqtt from 'mqtt'
-const host = '192.168.1.107'
-const port = '1883'
+import { editData, getData } from '../../json/firebase';
+const host = 'lightsdrix.tplinkdns.com'
+const port = '18832'
 const clientId = 'mqtt_server'
+
 
 const connectUrl = `mqtt://${host}:${port}`
 
@@ -44,28 +46,25 @@ export default async function controlLight(req: NextApiRequest,res: NextApiRespo
     if (req.method === 'POST') {
         console.log(req.body)
         var body=JSON.parse(req.body) as DataBody;
-
-        const jsonDirectory = path.join(process.cwd(), 'json');
-        const fileContents = await fs.readFile(jsonDirectory + '/data.json', 'utf8');
-        var old_state=JSON.parse(fileContents) as DataBody;
-
+        var old_state= await getData() as DataBody
+        
         if(old_state.effect==body.effect && old_state.power==body.power)
             res.status(200).json({status:"Not changed"})
         else{
             if(body.power==0)
             {
                 publish("light","power:0;effect:0")
-                fs.writeFile(jsonDirectory + '/data.json', JSON.stringify(body), { flag: 'w+' });
+                editData(body)
             }    
             else if (body.power==1 && old_state.power==0) {
                 //turn on light
                 //set effect=1
                 publish("light","power:1;effect:1")
                 //guardar no ficheiro
-                fs.writeFile(jsonDirectory + '/data.json', JSON.stringify(body), { flag: 'w+' });
+                editData(body)
             }else{
                 publish("light","power:1;effect:"+body.effect.toString());
-                fs.writeFile(jsonDirectory + '/data.json', JSON.stringify(body), { flag: 'w+' });
+                editData(body)
             
             }
             res.status(200).json({status:'OK'})

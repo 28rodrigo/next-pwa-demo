@@ -1,33 +1,18 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { editData, getData } from '../../json/firebase'
 
 type Data = {
   name: string
 }
-import mqtt from 'mqtt'
-const host = 'lightsdrix.tplinkdns.com'
-const port = '18832'
-const clientId = 'mqtt_server'
-
-const connectUrl = `mqtt://${host}:${port}`
-
-const client = mqtt.connect(connectUrl, {
-  clientId,
-  clean: true,
-  connectTimeout: 4000,
-  username: 'rodrigo',
-  password: 'lk3xpo4c',
-  reconnectPeriod: 1000,
-})
-
-client.on('connect', () => {
-    console.log("connected")
-  })
 
 
-export default function handler(
+
+export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse
 ) {
-  res.status(200).json({ name: 'John Doe' })
+  var dos= await getData();
+  editData({"power":1,"effect":2})
+  res.status(200).send(dos)
 }
