@@ -16,8 +16,6 @@
     "@types/node": "18.11.10",
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.9",
-    "firebase": "^9.14.0",
-    "mqtt": "^4.3.7",
     "next": "13.0.6",
     "next-pwa": "^5.6.0",
     "react": "18.2.0",
