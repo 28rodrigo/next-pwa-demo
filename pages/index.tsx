@@ -99,6 +99,10 @@ export default function Home() {
       });
       toggleEffects(0)
       setPower(!p)
+      fetch('https://lights.rodrigodev.tech/light',{
+        method: "POST",
+        body: JSON.stringify({"power":0,"effect":0}),
+      });
     }
       
   }
